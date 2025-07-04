@@ -13,6 +13,8 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
 export default function App() {
   const [news, setNews] = useState({});
   const [loading, setLoading] = useState(true);
+  const [openSections, setOpenSections] = useState({});
+  const [darkMode, setDarkMode] = useState(() => localStorage.getItem('darkMode') === 'true');
 
   useEffect(() => {
     const fetchAll = async () => {
@@ -33,12 +35,26 @@ export default function App() {
     fetchAll();
   }, []);
 
+  useEffect(() => {
+    localStorage.setItem('darkMode', darkMode);
+  }, [darkMode]);
+
+  const toggleSection = (topic) => {
+    setOpenSections(prev => ({ ...prev, [topic]: !prev[topic] }));
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-zinc-900 to-black text-white font-sans p-6">
-      <div className="max-w-4xl mx-auto">
-        <div className="bg-white/10 backdrop-blur-lg rounded-2xl shadow-xl p-6 mb-10 text-center">
+    <div className={`${darkMode ? 'bg-zinc-900 text-white' : 'bg-white text-black'} min-h-screen font-sans transition-colors duration-300`}>
+      <div className="max-w-4xl mx-auto p-6">
+        <div className={`${darkMode ? 'bg-white/10 text-white' : 'bg-zinc-100 text-black'} backdrop-blur-lg rounded-2xl shadow-xl p-6 mb-6 text-center`}>
           <h1 className="text-4xl font-bold mb-2">🗞️ Daily News Digest</h1>
-          <p className="text-zinc-300">Top 10 trending headlines in each category with a glassy look ✨</p>
+          <p className="text-zinc-400">Top 10 headlines by category</p>
+          <button
+            onClick={() => setDarkMode(!darkMode)}
+            className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-xl hover:bg-blue-600 transition"
+          >
+            Toggle {darkMode ? 'Light' : 'Dark'} Mode 🌓
+          </button>
         </div>
 
         {loading ? (
@@ -46,23 +62,29 @@ export default function App() {
         ) : (
           categories.map((topic) => (
             <div key={topic} className="mb-8">
-              <h2 className="text-2xl font-bold mb-4">
-                {emojiMap[topic]} {topic.toUpperCase()}
-              </h2>
-              <div className="grid gap-4">
-                {news[topic]?.map((item, i) => (
-                  <div key={i} className="bg-white/10 backdrop-blur-md rounded-xl p-4 shadow border border-white/20">
-                    <h3 className="text-lg font-semibold mb-1">{item.title}</h3>
-                    <p className="text-sm text-zinc-200 mb-2">{item.summary}</p>
-                    <div className="text-sm space-x-3 text-blue-300">
-                      <a href={`https://www.tiktok.com/search?q=${encodeURIComponent(item.title)}`} target="_blank" rel="noopener noreferrer">TikTok</a>
-                      <a href={`https://www.youtube.com/results?search_query=${encodeURIComponent(item.title)}`} target="_blank" rel="noopener noreferrer">YouTube</a>
-                      <a href={`https://www.instagram.com/explore/tags/${encodeURIComponent(item.title.split(" ")[0])}`} target="_blank" rel="noopener noreferrer">Instagram</a>
-                      <a href={item.url} target="_blank" rel="noopener noreferrer">Source</a>
+              <button
+                onClick={() => toggleSection(topic)}
+                className="text-2xl font-bold flex justify-between w-full mb-4"
+              >
+                <span>{emojiMap[topic]} {topic.toUpperCase()}</span>
+                <span>{openSections[topic] ? '▲' : '▼'}</span>
+              </button>
+              {openSections[topic] && (
+                <div className="grid gap-4">
+                  {news[topic]?.map((item, i) => (
+                    <div key={i} className={`${darkMode ? 'bg-white/10 text-white' : 'bg-zinc-100 text-black'} backdrop-blur-md rounded-xl p-4 shadow border border-white/10`}>
+                      <h3 className="text-lg font-semibold mb-1">{item.title}</h3>
+                      <p className="text-sm mb-2">{item.summary}</p>
+                      <div className="text-sm space-x-3 text-blue-500">
+                        <a href={`https://www.tiktok.com/search?q=${encodeURIComponent(item.title)}`} target="_blank" rel="noopener noreferrer">TikTok</a>
+                        <a href={`https://www.youtube.com/results?search_query=${encodeURIComponent(item.title)}`} target="_blank" rel="noopener noreferrer">YouTube</a>
+                        <a href={`https://www.instagram.com/explore/tags/${encodeURIComponent(item.title)}`} target="_blank" rel="noopener noreferrer">Instagram</a>
+                        <a href={item.url} target="_blank" rel="noopener noreferrer">Source</a>
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              )}
             </div>
           ))
         )}
