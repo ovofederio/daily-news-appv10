@@ -51,7 +51,7 @@ export default function App() {
       <div className="max-w-4xl mx-auto p-6">
         <div className={`${darkMode ? 'bg-white/10 text-white' : 'bg-zinc-100 text-black'} backdrop-blur-lg rounded-2xl shadow-xl p-6 mb-6 text-center`}>
           <h1 className="text-4xl font-bold mb-2">🗞️ Daily News Digest</h1>
-          <p className="text-zinc-400">Top 10 headlines by Category</p>
+          <p className="text-zinc-400">Top Headlines by Category</p>
           <button
             onClick={() => setDarkMode(!darkMode)}
             className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-xl hover:bg-blue-600 transition"

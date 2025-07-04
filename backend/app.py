@@ -16,7 +16,7 @@ def get_news():
         "token": GNEWS_API_KEY,
         "lang": "en",
         "topic": topic,
-        "max": 10
+        "max": 5
     }
     response = requests.get(BASE_URL, params=params)
     data = response.json()
