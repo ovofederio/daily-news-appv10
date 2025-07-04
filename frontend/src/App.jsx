@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
-const categories = ["politics", "sports", "entertainment", "technology","health","business", ];
+const categories = ["breaking-news", "politics", "sports", "entertainment", "technology","health","business", ];
 const emojiMap = {
+  "breaking-news": "💥",
   "politics": "🗳️",
   "sports": "🏀",
   "entertainment": "🎬",
