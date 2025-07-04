@@ -4,7 +4,7 @@ const categories = ["politics", "sports", "entertainment", "technology","health"
 const emojiMap = {
   "politics": "🗳️",
   "sports": "🏀",
-  "pop culture": "🎬",
+  "entertainment": "🎬",
   "technology": "🤖",
   "health": "🩺"
 };
