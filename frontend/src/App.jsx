@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 
-const categories = ["politics", "sports", "entertainment", "technology","health", ];
+const categories = ["politics", "sports", "entertainment", "technology","health","business", ];
 const emojiMap = {
   "politics": "🗳️",
   "sports": "🏀",
   "entertainment": "🎬",
   "technology": "🤖",
-  "health": "🩺"
+  "health": "🩺",
+  "business": "📈"
 };
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
